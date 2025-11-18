@@ -1,0 +1,45 @@
+# Ignore Git metadata
+.git
+.gitignore
+
+# Python caches
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pytest_cache/
+.mypy_cache/
+.eggs/
+*.egg-info/
+
+# Node / frontend
+node_modules/
+.pnpm-store/
+
+# Local env and secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.swo
+*.bak
+
+# IDE / Editor
+.vscode/
+.idea/
+*.iml
+
+# Docs, diagrams (optional for runtime images)
+*.md
+/docs/
+
+# MCP / Windsurf
+.windsurf/
+
+# Other
+Dockerfile*
