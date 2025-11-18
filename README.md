@@ -197,16 +197,60 @@ The goal is to have a **single source of truth** for configuration that both ser
 
 For production deployments you can:
 
-- Use the provided Dockerfiles to build images and push them to a container registry (e.g., GitHub Container Registry).
+You have two options:
+
+1. **Use prebuilt images from GitHub Container Registry (GHCR)**
+2. **Build and push your own images**
+
+### Option 1: Use Prebuilt Images (Recommended)
+
+Prebuilt images are published at:
+
+- Search API: `ghcr.io/crypto-gi/docsplorer-search-api:v0.1.1` and `:latest`
+- MCP Server: `ghcr.io/crypto-gi/docsplorer-mcp-server:v0.1.1` and `:latest`
+
+Example `docker-compose.yml` snippet using `latest`:
+
+```yaml
+services:
+  search-api:
+    image: ghcr.io/crypto-gi/docsplorer-search-api:latest
+    # ... rest of config (env, ports, healthchecks)
+
+  mcp-server:
+    image: ghcr.io/crypto-gi/docsplorer-mcp-server:latest
+    # ... rest of config (env, ports, healthchecks)
+```
+
+Then on any host with access to GHCR:
+
+```bash
+docker compose pull
+docker compose up -d
+```
+
+### Option 2: Build and Push Your Own Images
+
+You can build images from your fork or customized version of this repo:
+
+```bash
+# From repo root
+docker build -t ghcr.io/<your-org-or-user>/docsplorer-search-api:v0.1.1 services/search-api
+docker build -t ghcr.io/<your-org-or-user>/docsplorer-mcp-server:v0.1.1 services/mcp-server
+
+docker push ghcr.io/<your-org-or-user>/docsplorer-search-api:v0.1.1
+docker push ghcr.io/<your-org-or-user>/docsplorer-mcp-server:v0.1.1
+```
+
+Then reference your own image names and tags in `docker-compose.yml` or Kubernetes manifests.
+
+### Environment and Security
+
 - Configure `ENVIRONMENT=production` and use the `QDRANT_PROD_*` variables for your production Qdrant cluster.
 - Enable API key authentication between the MCP server and the Search API if desired.
+- Ensure TLS/HTTPS is used for production Qdrant and any external endpoints.
 
-A typical production flow:
-
-1. Build images for `search-api` and `mcp-server`.
-2. Push images to your registry.
-3. Deploy `docker-compose.yml` or equivalent manifests (Kubernetes, Nomad, etc.) referencing those images.
-4. Point your MCP client or workflow engine at the MCP HTTP endpoint.
+Once deployed, point your MCP client or workflow engine at the MCP HTTP endpoint (for example `http://your-host:8505/mcp`).
 
 ---
 

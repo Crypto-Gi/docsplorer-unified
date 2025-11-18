@@ -434,13 +434,18 @@ ENVIRONMENT=production
 
 ```bash
 # Build images
-docker build -t ghcr.io/crypto-gi/docsplorer-search-api:v0.1.0 services/search-api
-docker build -t ghcr.io/crypto-gi/docsplorer-mcp-server:v0.1.0 services/mcp-server
+docker build -t ghcr.io/crypto-gi/docsplorer-search-api:v0.1.1 services/search-api
+docker build -t ghcr.io/crypto-gi/docsplorer-mcp-server:v0.1.1 services/mcp-server
 
 # Push to registry
-docker push ghcr.io/crypto-gi/docsplorer-search-api:v0.1.0
-docker push ghcr.io/crypto-gi/docsplorer-mcp-server:v0.1.0
+docker push ghcr.io/crypto-gi/docsplorer-search-api:v0.1.1
+docker push ghcr.io/crypto-gi/docsplorer-mcp-server:v0.1.1
 ```
+
+> You can also use the `latest` tags instead of versioned tags if you always want the most recent published images:
+>
+> - `ghcr.io/crypto-gi/docsplorer-search-api:latest`
+> - `ghcr.io/crypto-gi/docsplorer-mcp-server:latest`
 
 ### Step 3: Deploy with Docker Compose
 
@@ -449,13 +454,15 @@ Update `docker-compose.yml` to use the registry images:
 ```yaml
 services:
   search-api:
-    image: ghcr.io/crypto-gi/docsplorer-search-api:v0.1.0
+    image: ghcr.io/crypto-gi/docsplorer-search-api:v0.1.1
     # ... rest of config
 
   mcp-server:
-    image: ghcr.io/crypto-gi/docsplorer-mcp-server:v0.1.0
+    image: ghcr.io/crypto-gi/docsplorer-mcp-server:v0.1.1
     # ... rest of config
 ```
+
+If you maintain your own fork or want to customize the services, replace `crypto-gi` and the tag (`v0.1.1`) with your own GHCR namespace and version.
 
 Then deploy:
 
