@@ -1,0 +1,117 @@
+# Environment variables and sensitive files
+.env
+.env.local
+.env.*.local
+*.env
+
+# Archive directory (old test files)
+archive/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Test results
+test_results.log
+*.test.log
+
+# Docker
+docker-compose.override.yml
+
+# Backup files
+*.bak
+*.backup
+*_old*
+*_backup*
+test_confluence_style_old*.sh
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# API keys and credentials
+*_key.txt
+*_secret.txt
+credentials.json
+secrets.json
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Certificates and keys
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+
+# Local configuration overrides
+config.local.json
+settings.local.json
+
+curl_test.md

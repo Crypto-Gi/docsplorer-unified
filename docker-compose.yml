@@ -1,0 +1,88 @@
+
+
+services:
+  search-api:
+    build:
+      context: ./services/search-api
+      dockerfile: Dockerfile
+    container_name: docsplorer-search-api
+    env_file: .env
+    ports:
+      - "${SEARCH_API_PORT:-8000}:8000"
+    environment:
+      # Pass through all environment variables
+      - ENVIRONMENT
+      - DEBUG
+      - REQUEST_TIMEOUT
+      - SEARCH_API_KEY_ENABLED
+      - SEARCH_API_KEY
+      - QDRANT_DEV_URL
+      - QDRANT_DEV_API_KEY
+      - QDRANT_DEV_VERIFY_SSL
+      - QDRANT_PROD_URL
+      - QDRANT_PROD_API_KEY
+      - QDRANT_PROD_VERIFY_SSL
+      - QDRANT_URL
+      - QDRANT_API_KEY
+      - QDRANT_VERIFY_SSL
+      - QDRANT_HOST
+      - QDRANT_FORCE_IGNORE_SSL
+      - OLLAMA_HOST
+      - CONTEXT_WINDOW_SIZE
+      - EMBEDDING_PROVIDER
+      - OLLAMA_EMBEDDING_MODEL
+      - OLLAMA_EMBEDDING_DIMENSIONS
+      - GEMINI_API_KEY
+      - GEMINI_EMBEDDING_MODEL
+      - GEMINI_EMBEDDING_TASK_TYPE
+      - GEMINI_EMBEDDING_DIMENSIONS
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - docsplorer-net
+
+  mcp-server:
+    build:
+      context: ./services/mcp-server
+      dockerfile: Dockerfile
+    container_name: docsplorer-mcp-server
+    env_file: .env
+    ports:
+      - "${MCP_HTTP_PORT:-8505}:8505"
+    environment:
+      # Internal network communication
+      - SEARCH_API_URL=http://search-api:8000
+      - SEARCH_API_KEY
+      - QDRANT_COLLECTION
+      - QDRANT_HOST
+      - QDRANT_API_KEY
+      - OLLAMA_HOST
+      - OLLAMA_EMBEDDING_MODEL
+      - OLLAMA_EMBEDDING_DIMENSIONS
+      - USE_PRODUCTION
+      - CONTEXT_WINDOW_SIZE
+      - DEFAULT_RESULT_LIMIT
+      - MCP_TRANSPORT=http
+      - MCP_HTTP_HOST=0.0.0.0
+      - MCP_HTTP_PORT=8505
+    depends_on:
+      search-api:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8505/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - docsplorer-net
+
+networks:
+  docsplorer-net:
+    driver: bridge
